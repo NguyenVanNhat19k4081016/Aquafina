@@ -1,0 +1,186 @@
+﻿@page "/counter"
+
+@using Syncfusion.Blazor
+@using Syncfusion.Blazor.Charts
+@using Aquafina.Pages
+@inject NavigationManager NavigationManager
+
+<div class="control-section" align='center'>
+    <SfChart Title="Giá Trị Chuyển Dượng Của Các Cầu Thủ Bóng Đá Trên Thế Giới" Width="@Width" Theme="@Theme">
+        <ChartArea>
+            <ChartAreaBorder Width="0"></ChartAreaBorder>
+        </ChartArea>
+        <ChartPrimaryXAxis Title="Tên Cầu Thủ" EnableTrim="false" ValueType="Syncfusion.Blazor.Charts.ValueType.Category">
+            <ChartAxisMajorGridLines Width="0"></ChartAxisMajorGridLines>
+        </ChartPrimaryXAxis>
+        <ChartPrimaryYAxis Minimum="0" Maximum="180" LabelFormat="{value}M" EdgeLabelPlacement="EdgeLabelPlacement.Shift">
+            <ChartAxisMajorGridLines Width="0"></ChartAxisMajorGridLines>
+            <ChartAxisMajorTickLines Width="0"></ChartAxisMajorTickLines>
+            <ChartAxisLineStyle Width="0"></ChartAxisLineStyle>
+            <ChartAxisLabelStyle Color="transparent"></ChartAxisLabelStyle>
+        </ChartPrimaryYAxis>
+        <ChartTooltipSettings Enable="true" Format="${point.tooltip}"></ChartTooltipSettings>
+        <ChartLegendSettings Visible="false"></ChartLegendSettings>
+        <ChartSeriesCollection>
+            <ChartSeries DataSource="@ChartPoints" TooltipMappingName="TooltipMappingName" Name="Giá" XName="Country" YName="Users" Width="2" Type="ChartSeriesType.Bar">
+                <ChartMarker>
+                    <ChartDataLabel Visible="true" Position="LabelPosition.Top">
+                        <ChartDataLabelFont FontWeight="600" Color="#ffffff"></ChartDataLabelFont>
+                    </ChartDataLabel>
+                </ChartMarker>
+            </ChartSeries>
+        </ChartSeriesCollection>
+        <ChartEvents OnPointRender="PointRender"></ChartEvents>
+    </SfChart>
+</div>
+@code{
+    private Theme Theme { get; set; }
+    public string Width { get; set; } = "90%";
+    public List<CategoryData> ChartPoints { get; set; } = new List<CategoryData>
+    {
+        new CategoryData { Country = "Son Heung-min", Users = 85.0, TooltipMappingName = "Son Heung-min: 85.00" },
+        new CategoryData { Country = "Phil Foden", Users = 95.0, TooltipMappingName = "Phil Foden: 95" },
+        new CategoryData { Country = "Kevin De Bruyne", Users = 100.0, TooltipMappingName = "Kevin De Bruyne: 100.00" },
+        new CategoryData { Country = "Erling Haaland", Users = 150.0, TooltipMappingName = "Erling Haaland: 150.00" },
+        new CategoryData { Country = "Kylian Mbappé", Users = 160.0, TooltipMappingName = "Kylian Mbappé: 160.00" },
+        new CategoryData { Country = "Vinicius Junior", Users = 100.0, TooltipMappingName = "Vinicius Junior: 100.00" },
+        new CategoryData { Country = "Mohamed Salah", Users = 90.0, TooltipMappingName = "Mohamed Salah: 90.00" },
+        new CategoryData { Country = "Neymar", Users = 86.0, TooltipMappingName = "Neymar: 86.00" }
+     };
+      public class CategoryData
+    {
+        public string Country { get; set; }
+        public double Users { get; set; }
+        public string TooltipMappingName { get; set; }
+    }
+    public void PointRender(PointRenderEventArgs args)
+    {
+        this.SetTheme(args);
+    }
+    private void SetTheme(PointRenderEventArgs args)
+    {
+        if (NavigationManager.Uri.IndexOf("material") > -1)
+        {
+            if (NavigationManager.Uri.IndexOf("dark") > -1)
+            {
+                if (args == null)
+                    Theme = Theme.MaterialDark;
+                else
+                    args.Fill = PointColor.MaterialDarkColors[args.Point.Index % 10];
+            }
+            else
+            {
+                if (args == null)
+                    Theme = Theme.Material;
+                else
+                    args.Fill = PointColor.MaterialColors[args.Point.Index % 10];
+            }
+        }
+        else if (NavigationManager.Uri.IndexOf("fabric") > -1)
+        {
+            if (NavigationManager.Uri.IndexOf("dark") > -1)
+            {
+                if (args == null)
+                    Theme = Theme.FabricDark;
+                else
+                    args.Fill = PointColor.FabricColors[args.Point.Index % 10];
+            }
+            else
+            {
+                if (args == null)
+                    Theme = Theme.Fabric;
+                else
+                    args.Fill = PointColor.FabricColors[args.Point.Index % 10];
+            }
+        }
+        else if (NavigationManager.Uri.IndexOf("bootstrap5") > -1)
+        {
+            if (NavigationManager.Uri.IndexOf("dark") > -1)
+            {
+                if (args == null)
+                    Theme = Theme.Bootstrap5Dark;
+                else
+                    args.Fill = PointColor.Bootstrap5DarkColors[args.Point.Index % 10];
+            }
+            else
+            {
+                if (args == null)
+                    Theme = Theme.Bootstrap5;
+                else
+                    args.Fill = PointColor.Bootstrap5Colors[args.Point.Index % 10];
+            }
+        }
+		else if (NavigationManager.Uri.IndexOf("fluent") > -1)
+        {
+            if (NavigationManager.Uri.IndexOf("dark") > -1)
+            {
+                if (args == null)
+                    Theme = Theme.FluentDark;
+                else
+                    args.Fill = PointColor.FluentDarkColors[args.Point.Index % 10];
+            }
+            else
+            {
+                if (args == null)
+                    Theme = Theme.Fluent;
+                else
+                    args.Fill = PointColor.FluentColors[args.Point.Index % 10];
+            }
+        }
+        else if (NavigationManager.Uri.IndexOf("bootstrap4") > -1)
+        {
+            if (args == null)
+                Theme = Theme.Bootstrap4;
+            else
+                args.Fill = PointColor.BootstrapColors[args.Point.Index % 10];
+        }
+        else if (NavigationManager.Uri.IndexOf("bootstrap") > -1)
+        {
+            if (NavigationManager.Uri.IndexOf("dark") > -1)
+            {
+                if (args == null)
+                    Theme = Theme.BootstrapDark;
+                else
+                    args.Fill = PointColor.BootstrapColors[args.Point.Index % 10];
+            }
+            else
+            {
+                if (args == null)
+                    Theme = Theme.Bootstrap;
+                else
+                    args.Fill = PointColor.BootstrapColors[args.Point.Index % 10];
+            }
+        }
+        else if (NavigationManager.Uri.IndexOf("tailwind") > -1)
+        {
+            if (NavigationManager.Uri.IndexOf("dark") > -1)
+            {
+                if (args == null)
+                    Theme = Theme.TailwindDark;
+                else
+                    args.Fill = PointColor.TailwindDarkColors[args.Point.Index % 10];
+            }
+            else
+            {
+                if (args == null)
+                    Theme = Theme.Tailwind;
+                else
+                    args.Fill = PointColor.TailwindColors[args.Point.Index % 10];
+            }
+        }
+        else if (NavigationManager.Uri.IndexOf("highcontrast") > -1)
+        {
+            if (args == null)
+                Theme = Theme.HighContrast;
+            else
+                args.Fill = PointColor.HighContrastColors[args.Point.Index % 10];
+        }
+        else
+        {
+            if (args == null)
+                Theme = Theme.Bootstrap4;
+            else
+                args.Fill = PointColor.BootstrapColors[args.Point.Index % 10];
+        }
+    }
+}

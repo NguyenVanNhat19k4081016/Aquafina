@@ -1,0 +1,48 @@
+﻿@page "/fetchdata"
+
+@using Syncfusion.Blazor
+@using Aquafina.Pages
+@using Syncfusion.Blazor.Charts
+
+@inject NavigationManager NavigationManager
+
+<div class="control-section">
+    <SfAccumulationChart Title="Thông Kê Quê Quán Sinh Viên Đại Học Kinh Tế Huế" Theme="@Theme">
+        <AccumulationChartLegendSettings Visible="true" Position="LegendPosition.Top">
+        </AccumulationChartLegendSettings>
+        <AccumulationChartTooltipSettings Enable="true"></AccumulationChartTooltipSettings>
+        <AccumulationChartSeriesCollection>
+            <AccumulationChartSeries DataSource="@DoughnutChartPoints" XName="Browser" YName="Users" Radius="90%" InnerRadius="40%" Name="Tỉnh" Explode="true" ExplodeOffset="10%" ExplodeIndex="3">
+                <AccumulationDataLabelSettings Visible="true" Name="DataLabelMappingName">
+                    <AccumulationChartDataLabelFont FontWeight="900" Color="white"></AccumulationChartDataLabelFont>
+                </AccumulationDataLabelSettings>
+            </AccumulationChartSeries>
+        </AccumulationChartSeriesCollection>
+    </SfAccumulationChart>
+</div>
+
+@code{
+
+    private Theme Theme { get; set; }
+    public List<DoughnutData> DoughnutChartPoints { get; set; } = new List<DoughnutData>
+    {
+        new DoughnutData  { Browser =  "Huế", Users = 42, DataLabelMappingName = "42%" },
+        new DoughnutData  { Browser =  "Quảng Trị", Users = 18, DataLabelMappingName = "18%" },
+        new DoughnutData  { Browser =  "Quảng Bình", Users = 15, DataLabelMappingName = "15%" },
+        new DoughnutData  { Browser =  "Hà Tĩnh", Users = 10, DataLabelMappingName = "10%" },
+        new DoughnutData  { Browser =  "Quảng Nam", Users = 9, DataLabelMappingName = "9%" },
+        new DoughnutData  { Browser =  "Các Tỉnh Thành Khác", Users = 6, DataLabelMappingName = "6%" },
+    };
+
+    protected override void OnInitialized()
+    {
+        Theme = ThemeHelper.GetCurrentTheme(NavigationManager.Uri);
+    }
+
+    public class DoughnutData
+    {
+        public string Browser { get; set; }
+        public double Users { get; set; }
+        public string DataLabelMappingName { get; set; }
+    }
+}
